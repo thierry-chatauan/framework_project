@@ -1,0 +1,54 @@
+{% extends 'tracker/base.html' %} {% block title %}Project List{% endblock %} 
+{% block content %}
+<h2 class="mb-4">Submitted Projects</h2>
+
+<table class="table table-striped table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Stakeholders</th>
+      <th>Status</th>
+      <th>Edit</th>
+      {% if request.user.is_superuser %}<th>Delete</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in projects %}
+    <tr>
+      <td>{{ project.name }}</td>
+      <td>{{ project.description }}</td>
+      <td>{{ project.start_date }}</td>
+      <td>{{ project.end_date }}</td>
+      <td>{{ project.stakeholders }}</td>
+      <td>
+        {% if project.status == 'IN' %}
+        <span class="badge bg-warning text-dark">In Progress</span>
+        {% elif project.status == 'CO' %}
+        <span class="badge bg-success">Completed</span>
+        {% elif project.status == 'HO' %}
+        <span class="badge bg-danger">On Hold</span>
+        {% elif project.status == 'CA' %}
+        <span class="badge bg-secondary">Canceled</span>
+        {% else %}
+        <span class="badge bg-light text-dark">{{ project.get_status_display }}</span>
+        {% endif %}
+      </td>
+      <td>
+        <a href="{% url 'edit-project' project.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+      </td>
+      {% if request.user.is_superuser %}
+        <td>
+          <form method="POST" action="{% url 'delete-project' project.id %}" onsubmit="return confirm('Are you sure?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+        </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

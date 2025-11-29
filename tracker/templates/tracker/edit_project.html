@@ -1,0 +1,22 @@
+{% extends 'tracker/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit Project{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">Edit Project: {{ project.name }}</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {% comment %} {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="text-danger">{{ field.errors }}</div>
+        {% endif %}
+      </div>
+    {% endfor %} {% endcomment %}
+    <button type="submit" class="btn btn-primary w-100 mt-3">Update Project</button>
+  </form>
+{% endblock %}

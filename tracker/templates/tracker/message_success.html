@@ -1,0 +1,10 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+  <h2 class="text-success">✅ Message sent successfully!</h2>
+  <a href="/send/" class="btn btn-primary mt-3">Send Another Message</a>
+  or
+    <a href="/inbox/" class="btn btn-secondary mt-3">Go to Inbox</a>
+{% endblock %}
